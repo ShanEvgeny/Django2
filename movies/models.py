@@ -2,19 +2,10 @@ from django.db import models
 
 class Genre(models.Model):
     title = models.TextField("Название")
-    description = models.TextField("Описание")
+    description = models.TextField("Описание", null = True)
     class Meta:
         verbose_name = "Жанр"
         verbose_name_plural = "Жанры"
-    def __str__(self) -> str:
-        return self.title
-class MovieHouse(models.Model):
-    title = models.TextField("Название")
-    address = models.TextField("Адрес")
-    phone_number = models.TextField("Номер телефона")
-    class Meta:
-        verbose_name = "Кинотеатр"
-        verbose_name_plural = "Кинотеатры"
     def __str__(self) -> str:
         return self.title
 class Director(models.Model):
@@ -37,15 +28,12 @@ class Movie(models.Model):
     def __str__(self) -> str:
         return self.title
 class MovieHall(models.Model):
-    movie_house =  models.ForeignKey('MovieHouse', on_delete = models.CASCADE,verbose_name='Кинотеатр', null = True)
     sequence_number = models.PositiveIntegerField("Порядковый номер зала")
     count_of_seats = models.PositiveIntegerField("Количество мест")
     class Meta:
         verbose_name = "Кинозал"
         verbose_name_plural = "Кинозалы"
-        unique_together = ['movie_house', 'sequence_number']
 class MovieSession(models.Model):
-    #movie_house = models.ForeignKey('MovieHouse', on_delete = models.CASCADE,verbose_name='Кинотеатр', null = True)
     movie_hall = models.ForeignKey('MovieHall', on_delete = models.CASCADE,verbose_name='Зал', null = True)
     movie = models.ForeignKey('Movie', on_delete = models.CASCADE,verbose_name='Фильм', null = True)
     date_of_event = models.DateTimeField("Дата проведения")
@@ -58,5 +46,3 @@ class Ticket(models.Model):
     class Meta:
         verbose_name = "Билет"
         verbose_name_plural = "Билеты"
-        
-    
