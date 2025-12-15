@@ -1,5 +1,6 @@
 from django.db import models
-
+from datetime import date, time
+import datetime
 class Genre(models.Model):
     title = models.TextField("Название")
     description = models.TextField("Описание", null = True)
@@ -29,6 +30,7 @@ class Movie(models.Model):
         return self.title
 class MovieHall(models.Model):
     sequence_number = models.PositiveIntegerField("Порядковый номер зала")
+    is_imax = models.BooleanField("IMAX", default = False)
     count_of_seats = models.PositiveIntegerField("Количество мест")
     class Meta:
         verbose_name = "Кинозал"
@@ -36,7 +38,7 @@ class MovieHall(models.Model):
 class MovieSession(models.Model):
     movie_hall = models.ForeignKey('MovieHall', on_delete = models.CASCADE,verbose_name='Зал', null = True)
     movie = models.ForeignKey('Movie', on_delete = models.CASCADE,verbose_name='Фильм', null = True)
-    date_of_event = models.DateTimeField("Дата проведения")
+    date_of_event = models.DateTimeField("Дата и время проведения")
     class Meta:
         verbose_name = "Киносеанс"
         verbose_name_plural = "Киносеансы"
